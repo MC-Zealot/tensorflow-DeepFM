@@ -1,3 +1,4 @@
+# coding=utf-8
 """
 A data parser for Porto Seguro's Safe Driver Prediction competition's dataset.
 URL: https://www.kaggle.com/c/porto-seguro-safe-driver-prediction
@@ -34,7 +35,7 @@ class FeatureDictionary(object):
         for col in df.columns:
             if col in self.ignore_cols:
                 continue
-            if col in self.numeric_cols:  #对于数值型特征，直接用tc当做特征值？
+            if col in self.numeric_cols:  #对于数值型特征，直接用索引tc当做特征值？
                 # map to a single index
                 self.feat_dict[col] = tc
                 tc += 1
