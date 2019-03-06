@@ -19,7 +19,7 @@ class FeatureDictionary(object):
         self.ignore_cols = ignore_cols
         self.gen_feat_dict()
 
-    def gen_feat_dict(self):
+    def gen_feat_dict(self): #特征字典
         if self.dfTrain is None:
             dfTrain = pd.read_csv(self.trainfile)
         else:
@@ -34,14 +34,14 @@ class FeatureDictionary(object):
         for col in df.columns:
             if col in self.ignore_cols:
                 continue
-            if col in self.numeric_cols:
+            if col in self.numeric_cols:  #对于数值型特征，直接用tc当做特征值？
                 # map to a single index
                 self.feat_dict[col] = tc
                 tc += 1
             else:
-                us = df[col].unique()
-                self.feat_dict[col] = dict(zip(us, range(tc, len(us)+tc)))
-                tc += len(us)
+                us = df[col].unique()  #对于类别型特征，获得每个特征的不同的特征值（去重）
+                self.feat_dict[col] = dict(zip(us, range(tc, len(us)+tc)))  #把特征值记录到dict当中，[特证名，[特征值，特征索引]]
+                tc += len(us) #特征索引，每次都加
         self.feat_dim = tc
         print "self.feat_dict: "+str(self.feat_dict)
         print "self.feat_dim: "+str(self.feat_dim)

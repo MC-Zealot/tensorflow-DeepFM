@@ -50,6 +50,9 @@ def _load_data():
 
 def _run_base_model_dfm(dfTrain, dfTest, folds, dfm_params):
     fd = FeatureDictionary(dfTrain=dfTrain, dfTest=dfTest, numeric_cols=config.NUMERIC_COLS, ignore_cols=config.IGNORE_COLS)
+    print "fd: " + str(fd)
+    print "end"
+    exit(0)
     data_parser = DataParser(feat_dict=fd)
     Xi_train, Xv_train, y_train = data_parser.parse(df=dfTrain, has_label=True)
     Xi_test, Xv_test, ids_test = data_parser.parse(df=dfTest)
@@ -127,8 +130,8 @@ print "_load_data done"
 folds = list(StratifiedKFold(n_splits=config.NUM_SPLITS, shuffle=True, random_state=config.RANDOM_SEED).split(X_train, y_train))
 print "folds: " + str(folds)
 print "folds len: " + str(len(folds))
-print "folds done end"
-exit(0)
+print "folds done"
+
 
 # ------------------ DeepFM Model ------------------
 # params
