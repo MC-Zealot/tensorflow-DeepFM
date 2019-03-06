@@ -118,14 +118,17 @@ def _plot_fig(train_results, valid_results, model_name):
     plt.close()
 
 
+print "start"
 # load data
 dfTrain, dfTest, X_train, y_train, X_test, ids_test, cat_features_indices = _load_data()
-print "end"
-exit(0)
-print "end2"
-# folds
-folds = list(StratifiedKFold(n_splits=config.NUM_SPLITS, shuffle=True, random_state=config.RANDOM_SEED).split(X_train, y_train))
 
+print "_load_data done"
+# cross-validation，类似kfold，但是他是分层采样，确保训练集，测试集中各类别样本的比例与原始数据集中相同。分成NUM_SPLITS组（train,test）数据
+folds = list(StratifiedKFold(n_splits=config.NUM_SPLITS, shuffle=True, random_state=config.RANDOM_SEED).split(X_train, y_train))
+print "folds: " + str(folds)
+print "folds len: " + str(len(folds))
+print "folds done end"
+exit(0)
 
 # ------------------ DeepFM Model ------------------
 # params

@@ -6,8 +6,7 @@ import pandas as pd
 
 
 class FeatureDictionary(object):
-    def __init__(self, trainfile=None, testfile=None,
-                 dfTrain=None, dfTest=None, numeric_cols=[], ignore_cols=[]):
+    def __init__(self, trainfile=None, testfile=None, dfTrain=None, dfTest=None, numeric_cols=[], ignore_cols=[]):
         assert not ((trainfile is None) and (dfTrain is None)), "trainfile or dfTrain at least one is set"
         assert not ((trainfile is not None) and (dfTrain is not None)), "only one can be set"
         assert not ((testfile is None) and (dfTest is None)), "testfile or dfTest at least one is set"
@@ -44,6 +43,8 @@ class FeatureDictionary(object):
                 self.feat_dict[col] = dict(zip(us, range(tc, len(us)+tc)))
                 tc += len(us)
         self.feat_dim = tc
+        print "self.feat_dict: "+str(self.feat_dict)
+        print "self.feat_dim: "+str(self.feat_dim)
 
 
 class DataParser(object):
