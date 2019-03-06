@@ -15,6 +15,7 @@ from metrics import gini_norm
 from DataReader import FeatureDictionary, DataParser
 sys.path.append("..")
 from DeepFM import DeepFM
+from sklearn.metrics import roc_auc_score
 
 gini_scorer = make_scorer(gini_norm, greater_is_better=True, needs_proba=True)
 
@@ -51,15 +52,16 @@ def _load_data():
 def _run_base_model_dfm(dfTrain, dfTest, folds, dfm_params):
     fd = FeatureDictionary(dfTrain=dfTrain, dfTest=dfTest, numeric_cols=config.NUMERIC_COLS, ignore_cols=config.IGNORE_COLS)
     print "fd: " + str(fd)
-    print "end"
-    exit(0)
+
     data_parser = DataParser(feat_dict=fd)
     Xi_train, Xv_train, y_train = data_parser.parse(df=dfTrain, has_label=True)
     Xi_test, Xv_test, ids_test = data_parser.parse(df=dfTest)
 
     dfm_params["feature_size"] = fd.feat_dim
     dfm_params["field_size"] = len(Xi_train[0])
-
+    print "feature_size:" +str(dfm_params["feature_size"])+", field_size: " + str(dfm_params["field_size"])
+    print "end"
+    exit(0)
     y_train_meta = np.zeros((dfTrain.shape[0], 1), dtype=float)
     y_test_meta = np.zeros((dfTest.shape[0], 1), dtype=float)
     _get = lambda x, l: [x[i] for i in l]
