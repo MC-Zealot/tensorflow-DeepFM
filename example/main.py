@@ -28,14 +28,16 @@ def _load_data():
         cols = [c for c in df.columns if c not in ["id", "target"]]#去掉id和target这两列
         df["missing_feat"] = np.sum((df[cols] == -1).values, axis=1)#统计样本缺失特征个数
         df["ps_car_13_x_ps_reg_03"] = df["ps_car_13"] * df["ps_reg_03"]
-        print df["missing_feat"]
+        # print df["missing_feat"]
         return df
 
     dfTrain = preprocess(dfTrain)
     dfTest = preprocess(dfTest)
-
-    cols = [c for c in dfTrain.columns if c not in ["id", "target"]]
-    cols = [c for c in cols if (not c in config.IGNORE_COLS)]
+    print "cols len before: " + str(len(dfTrain.columns)) + ": " + str(dfTrain.columns)
+    cols = [c for c in dfTrain.columns if c not in ["id", "target"]]  # todo 这行可以删掉的
+    print "cols len mid: " + str(len(cols)) + ": " + str(cols)
+    cols = [c for c in cols if (not c in config.IGNORE_COLS)]  # 留下的特征
+    print "cols len after: " + str(len(cols)) + ": " + str(cols)
 
     X_train = dfTrain[cols].values
     y_train = dfTrain["target"].values
