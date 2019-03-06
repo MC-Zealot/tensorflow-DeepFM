@@ -84,7 +84,7 @@ class DataParser(object):
         # list of list of feature values of each sample in the dataset
         Xv = dfv.values.tolist()
         if has_label:
-            return Xi, Xv, y
+            return Xi, Xv, y#返回特征索引、特征值、label
         else:
             return Xi, Xv, ids
 
