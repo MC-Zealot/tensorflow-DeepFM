@@ -1,3 +1,4 @@
+# coding=utf-8
 
 import os
 import sys
@@ -24,9 +25,10 @@ def _load_data():
     dfTest = pd.read_csv(config.TEST_FILE)
 
     def preprocess(df):
-        cols = [c for c in df.columns if c not in ["id", "target"]]
-        df["missing_feat"] = np.sum((df[cols] == -1).values, axis=1)
+        cols = [c for c in df.columns if c not in ["id", "target"]]#去掉id和target这两列
+        df["missing_feat"] = np.sum((df[cols] == -1).values, axis=1)#统计样本缺失特征个数
         df["ps_car_13_x_ps_reg_03"] = df["ps_car_13"] * df["ps_reg_03"]
+        print df["missing_feat"]
         return df
 
     dfTrain = preprocess(dfTrain)
@@ -118,10 +120,11 @@ def _plot_fig(train_results, valid_results, model_name):
 
 # load data
 dfTrain, dfTest, X_train, y_train, X_test, ids_test, cat_features_indices = _load_data()
-
+print "end"
+exit(0)
+print "end2"
 # folds
-folds = list(StratifiedKFold(n_splits=config.NUM_SPLITS, shuffle=True,
-                             random_state=config.RANDOM_SEED).split(X_train, y_train))
+folds = list(StratifiedKFold(n_splits=config.NUM_SPLITS, shuffle=True, random_state=config.RANDOM_SEED).split(X_train, y_train))
 
 
 # ------------------ DeepFM Model ------------------
