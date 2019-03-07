@@ -309,7 +309,7 @@ class DeepFM(BaseEstimator, TransformerMixin):
             Xi_train = Xi_train + Xi_valid
             Xv_train = Xv_train + Xv_valid
             y_train = y_train + y_valid
-            for epoch in range(100):
+            for epoch in range(100):#写死迭代100次
                 self.shuffle_in_unison_scary(Xi_train, Xv_train, y_train)
                 total_batch = int(len(y_train) / self.batch_size)
                 for i in range(total_batch):

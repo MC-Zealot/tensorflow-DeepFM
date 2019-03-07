@@ -60,21 +60,23 @@ def _run_base_model_dfm(dfTrain, dfTest, folds, dfm_params):
     dfm_params["feature_size"] = fd.feat_dim
     dfm_params["field_size"] = len(Xi_train[0])
     print "feature_size:" +str(dfm_params["feature_size"])+", field_size: " + str(dfm_params["field_size"])
-    print "end"
-    exit(0)
+    # print "end"
+    # exit(0)
     y_train_meta = np.zeros((dfTrain.shape[0], 1), dtype=float)
     y_test_meta = np.zeros((dfTest.shape[0], 1), dtype=float)
+    print "dfTrain.shape[0]: " + str(dfTrain.shape[0])  # 一共的行数
+    print "(dfTrain.shape[0], 1): " + str((dfTrain.shape[0], 1))  # （行数，列数）
+    print "y_train_meta: " + str(y_train_meta)
     _get = lambda x, l: [x[i] for i in l]
     gini_results_cv = np.zeros(len(folds), dtype=float)
     gini_results_epoch_train = np.zeros((len(folds), dfm_params["epoch"]), dtype=float)
     gini_results_epoch_valid = np.zeros((len(folds), dfm_params["epoch"]), dtype=float)
-    for i, (train_idx, valid_idx) in enumerate(folds):
+    for i, (train_idx, valid_idx) in enumerate(folds): #这里有3个fold，应该是循环三次
         Xi_train_, Xv_train_, y_train_ = _get(Xi_train, train_idx), _get(Xv_train, train_idx), _get(y_train, train_idx)
         Xi_valid_, Xv_valid_, y_valid_ = _get(Xi_train, valid_idx), _get(Xv_train, valid_idx), _get(y_train, valid_idx)
 
         dfm = DeepFM(**dfm_params)
         dfm.fit(Xi_train_, Xv_train_, y_train_, Xi_valid_, Xv_valid_, y_valid_)
-
         y_train_meta[valid_idx,0] = dfm.predict(Xi_valid_, Xv_valid_)
         y_test_meta[:,0] += dfm.predict(Xi_test, Xv_test)
 
@@ -101,8 +103,7 @@ def _run_base_model_dfm(dfTrain, dfTest, folds, dfm_params):
 
 
 def _make_submission(ids, y_pred, filename="submission.csv"):
-    pd.DataFrame({"id": ids, "target": y_pred.flatten()}).to_csv(
-        os.path.join(config.SUB_DIR, filename), index=False, float_format="%.5f")
+    pd.DataFrame({"id": ids, "target": y_pred.flatten()}).to_csv(os.path.join(config.SUB_DIR, filename), index=False, float_format="%.5f")
 
 
 def _plot_fig(train_results, valid_results, model_name):
@@ -158,6 +159,9 @@ dfm_params = {
 }
 y_train_dfm, y_test_dfm = _run_base_model_dfm(dfTrain, dfTest, folds, dfm_params)
 
+
+print "done"
+exit(0)
 # ------------------ FM Model ------------------
 fm_params = dfm_params.copy()
 fm_params["use_deep"] = False
