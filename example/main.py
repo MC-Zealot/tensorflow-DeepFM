@@ -154,8 +154,8 @@ dfm_params = {
     "deep_layers": [32, 32],
     "dropout_deep": [0.5, 0.5, 0.5],
     "deep_layers_activation": tf.nn.relu,
-    "epoch": 30,
-    "batch_size": 1024,
+    "epoch": 30,#一共迭代30轮
+    "batch_size": 1024,#一次批量训练1024个样本
     "learning_rate": 0.001,
     "optimizer_type": "adam",
     "batch_norm": 1,

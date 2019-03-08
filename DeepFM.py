@@ -17,17 +17,28 @@ from tensorflow.contrib.layers.python.layers import batch_norm as batch_norm
 
 
 class DeepFM(BaseEstimator, TransformerMixin):
-    def __init__(self, feature_size, field_size,
-                 embedding_size=8, dropout_fm=[1.0, 1.0],
-                 deep_layers=[32, 32], dropout_deep=[0.5, 0.5, 0.5],
+    def __init__(self,
+                 feature_size,
+                 field_size,
+                 embedding_size=8,
+                 dropout_fm=[1.0, 1.0],
+                 deep_layers=[32, 32],
+                 dropout_deep=[0.5, 0.5, 0.5],
                  deep_layers_activation=tf.nn.relu,
-                 epoch=10, batch_size=256,
-                 learning_rate=0.001, optimizer_type="adam",
-                 batch_norm=0, batch_norm_decay=0.995,
-                 verbose=False, random_seed=2016,
-                 use_fm=True, use_deep=True,
-                 loss_type="logloss", eval_metric=roc_auc_score,
-                 l2_reg=0.0, greater_is_better=True):
+                 epoch=10,
+                 batch_size=256,
+                 learning_rate=0.001,
+                 optimizer_type="adam",
+                 batch_norm=0,
+                 batch_norm_decay=0.995,
+                 verbose=False,
+                 random_seed=2016,
+                 use_fm=True,
+                 use_deep=True,
+                 loss_type="logloss",
+                 eval_metric=roc_auc_score,
+                 l2_reg=0.0,
+                 greater_is_better=True):
         assert (use_fm or use_deep)
         assert loss_type in ["logloss", "mse"], \
             "loss_type can be either 'logloss' for classification task or 'mse' for regression task"
@@ -291,11 +302,9 @@ class DeepFM(BaseEstimator, TransformerMixin):
                 self.valid_result.append(valid_result)
             if self.verbose > 0 and epoch % self.verbose == 0:
                 if has_valid:
-                    print("[%d] train-result=%.4f, valid-result=%.4f [%.1f s]"
-                        % (epoch + 1, train_result, valid_result, time() - t1))
+                    print("[%d] train-result=%.4f, valid-result=%.4f [%.1f s]" % (epoch + 1, train_result, valid_result, time() - t1))
                 else:
-                    print("[%d] train-result=%.4f [%.1f s]"
-                        % (epoch + 1, train_result, time() - t1))
+                    print("[%d] train-result=%.4f [%.1f s]" % (epoch + 1, train_result, time() - t1))
             if has_valid and early_stopping and self.training_termination(self.valid_result):
                 break
 
@@ -324,7 +333,6 @@ class DeepFM(BaseEstimator, TransformerMixin):
                     ((not self.greater_is_better) and train_result < best_train_score):
                     break
 
-
     def training_termination(self, valid_result):
         if len(valid_result) > 5:
             if self.greater_is_better:
@@ -340,7 +348,6 @@ class DeepFM(BaseEstimator, TransformerMixin):
                     valid_result[-4] > valid_result[-5]:
                     return True
         return False
-
 
     def predict(self, Xi, Xv):
         """
@@ -372,7 +379,6 @@ class DeepFM(BaseEstimator, TransformerMixin):
             Xi_batch, Xv_batch, y_batch = self.get_batch(Xi, Xv, dummy_y, self.batch_size, batch_index)
 
         return y_pred
-
 
     def evaluate(self, Xi, Xv, y):
         """
