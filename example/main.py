@@ -64,14 +64,14 @@ def _run_base_model_dfm(dfTrain, dfTest, folds, dfm_params):
     # exit(0)
     y_train_meta = np.zeros((dfTrain.shape[0], 1), dtype=float)
     y_test_meta = np.zeros((dfTest.shape[0], 1), dtype=float)
-    print "dfTrain.shape[0]: " + str(dfTrain.shape[0])  # 一共的行数
+    print "dfTrain.shape[0]: " + str(dfTrain.shape[0])  #训练集样本数
     print "(dfTrain.shape[0], 1): " + str((dfTrain.shape[0], 1))  # （行数，列数）
     print "y_train_meta: " + str(y_train_meta)
     _get = lambda x, l: [x[i] for i in l]
     gini_results_cv = np.zeros(len(folds), dtype=float)
     gini_results_epoch_train = np.zeros((len(folds), dfm_params["epoch"]), dtype=float)
     gini_results_epoch_valid = np.zeros((len(folds), dfm_params["epoch"]), dtype=float)
-    for i, (train_idx, valid_idx) in enumerate(folds): #这里有3个fold，应该是循环三次
+    for i, (train_idx, valid_idx) in enumerate(folds): #这里有3个fold，循环3次
         Xi_train_, Xv_train_, y_train_ = _get(Xi_train, train_idx), _get(Xv_train, train_idx), _get(y_train, train_idx)
         Xi_valid_, Xv_valid_, y_valid_ = _get(Xi_train, valid_idx), _get(Xv_train, valid_idx), _get(y_train, valid_idx)
 
@@ -129,12 +129,20 @@ print "start"
 dfTrain, dfTest, X_train, y_train, X_test, ids_test, cat_features_indices = _load_data()
 
 print "_load_data done"
-# cross-validation，类似kfold，但是他是分层采样，确保训练集，测试集中各类别样本的比例与原始数据集中相同。分成NUM_SPLITS组（train,test）数据
-folds = list(StratifiedKFold(n_splits=config.NUM_SPLITS, shuffle=True, random_state=config.RANDOM_SEED).split(X_train, y_train))
-print "folds: " + str(folds)
-print "folds len: " + str(len(folds))
-print "folds done"
+# cross-validation，类似k折交叉验证：在样本量不充足的情况下，为了充分利用数据集对算法效果进行测试，将数据集A随机分为k个包，每次将其中一个包作为测试集，剩下k-1个包作为训练集进行训练。
+# 但是他是分层采样，确保训练集，测试集中各类别样本的比例与原始数据集中相同。分成NUM_SPLITS组（train,test）数据
 
+folds = list(StratifiedKFold(n_splits=config.NUM_SPLITS, shuffle=True, random_state=config.RANDOM_SEED).split(X_train, y_train))
+print "X_train len: " + str(len(X_train))
+print "folds: " + str(folds)
+
+print "folds all len: " + str(len(folds))
+for i in range(len(folds)):
+    print "folds[0]["+str(i)+"] len:" + str(len(folds[i][0])) + ", folds["+str(i)+"][1] len:" + str(len(folds[i][1]))
+# print "folds[1][0] len:" + str(len(folds[1][0])) + ", folds[1][1] len:" + str(len(folds[1][1]))
+# print "folds[2][0] len:" + str(len(folds[2][0])) + ", folds[2][1] len:" + str(len(folds[2][1]))
+print "folds done"
+exit(0)
 
 # ------------------ DeepFM Model ------------------
 # params
