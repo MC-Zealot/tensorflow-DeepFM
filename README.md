@@ -1,4 +1,4 @@
-# tensorflow-DeepFM123
+# tensorflow-DeepFM
 
 This project includes a Tensorflow implementation of DeepFM [1].
 
