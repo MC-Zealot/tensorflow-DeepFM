@@ -12,6 +12,7 @@ from sklearn.model_selection import StratifiedKFold
 
 import config
 from metrics import gini_norm
+from sklearn.metrics import roc_auc_score
 from DataReader import FeatureDictionary, DataParser
 sys.path.append("..")
 from DeepFM import DeepFM
@@ -34,11 +35,11 @@ def _load_data():
 
     dfTrain = preprocess(dfTrain)
     dfTest = preprocess(dfTest)
-    print "cols len before: " + str(len(dfTrain.columns)) + ": " + str(dfTrain.columns)
+    print ("cols len before: " + str(len(dfTrain.columns)) + ": " + str(dfTrain.columns))
     cols = [c for c in dfTrain.columns if c not in ["id", "target"]]  # todo 这行可以删掉的
-    print "cols len mid: " + str(len(cols)) + ": " + str(cols)
+    print ("cols len mid: " + str(len(cols)) + ": " + str(cols))
     cols = [c for c in cols if (not c in config.IGNORE_COLS)]  # 留下的特征
-    print "cols len after: " + str(len(cols)) + ": " + str(cols)
+    print ("cols len after: " + str(len(cols)) + ": " + str(cols))
 
     X_train = dfTrain[cols].values
     y_train = dfTrain["target"].values
@@ -51,7 +52,7 @@ def _load_data():
 
 def _run_base_model_dfm(dfTrain, dfTest, folds, dfm_params):
     fd = FeatureDictionary(dfTrain=dfTrain, dfTest=dfTest, numeric_cols=config.NUMERIC_COLS, ignore_cols=config.IGNORE_COLS)
-    print "fd: " + str(fd)
+    print ("fd: " + str(fd))
 
     data_parser = DataParser(feat_dict=fd)
     Xi_train, Xv_train, y_train = data_parser.parse(df=dfTrain, has_label=True)
@@ -59,14 +60,14 @@ def _run_base_model_dfm(dfTrain, dfTest, folds, dfm_params):
 
     dfm_params["feature_size"] = fd.feat_dim
     dfm_params["field_size"] = len(Xi_train[0])
-    print "feature_size:" +str(dfm_params["feature_size"])+", field_size: " + str(dfm_params["field_size"])
+    print ("feature_size:" +str(dfm_params["feature_size"])+", field_size: " + str(dfm_params["field_size"]))
     # print "end"
     # exit(0)
     y_train_meta = np.zeros((dfTrain.shape[0], 1), dtype=float)
     y_test_meta = np.zeros((dfTest.shape[0], 1), dtype=float)
-    print "dfTrain.shape[0]: " + str(dfTrain.shape[0])  #训练集样本数
-    print "(dfTrain.shape[0], 1): " + str((dfTrain.shape[0], 1))  # （行数，列数）
-    print "y_train_meta: " + str(y_train_meta)
+    print ("dfTrain.shape[0]: " + str(dfTrain.shape[0]))  #训练集样本数
+    print ("(dfTrain.shape[0], 1): " + str((dfTrain.shape[0], 1)))  # （行数，列数）
+    print ("y_train_meta: " + str(y_train_meta))
     _get = lambda x, l: [x[i] for i in l]
     gini_results_cv = np.zeros(len(folds), dtype=float)
     gini_results_epoch_train = np.zeros((len(folds), dfm_params["epoch"]), dtype=float)
@@ -124,25 +125,25 @@ def _plot_fig(train_results, valid_results, model_name):
     plt.close()
 
 
-print "start"
+print ("start")
 # load data
 dfTrain, dfTest, X_train, y_train, X_test, ids_test, cat_features_indices = _load_data()
 
-print "_load_data done"
+print ("_load_data done")
 # cross-validation，类似k折交叉验证：在样本量不充足的情况下，为了充分利用数据集对算法效果进行测试，将数据集A随机分为k个包，每次将其中一个包作为测试集，剩下k-1个包作为训练集进行训练。
 # 但是他是分层采样，确保训练集，测试集中各类别样本的比例与原始数据集中相同。分成NUM_SPLITS组（train,test）数据
 
 folds = list(StratifiedKFold(n_splits=config.NUM_SPLITS, shuffle=True, random_state=config.RANDOM_SEED).split(X_train, y_train))
-print "X_train len: " + str(len(X_train))
-print "folds: " + str(folds)
+print ("X_train len: " + str(len(X_train)))
+print ("folds: " + str(folds))
 
-print "folds all len: " + str(len(folds))
+print ("folds all len: " + str(len(folds)))
 for i in range(len(folds)):
-    print "folds[0]["+str(i)+"] len:" + str(len(folds[i][0])) + ", folds["+str(i)+"][1] len:" + str(len(folds[i][1]))
+    print ("folds[0]["+str(i)+"] len:" + str(len(folds[i][0])) + ", folds["+str(i)+"][1] len:" + str(len(folds[i][1])))
 # print "folds[1][0] len:" + str(len(folds[1][0])) + ", folds[1][1] len:" + str(len(folds[1][1]))
 # print "folds[2][0] len:" + str(len(folds[2][0])) + ", folds[2][1] len:" + str(len(folds[2][1]))
-print "folds done"
-exit(0)
+print ("folds done")
+# exit(0)
 
 # ------------------ DeepFM Model ------------------
 # params
@@ -162,13 +163,13 @@ dfm_params = {
     "batch_norm_decay": 0.995,
     "l2_reg": 0.01,
     "verbose": True,
-    "eval_metric": gini_norm,
+    "eval_metric": roc_auc_score,
     "random_seed": config.RANDOM_SEED
 }
 y_train_dfm, y_test_dfm = _run_base_model_dfm(dfTrain, dfTest, folds, dfm_params)
 
 
-print "done"
+print ("done")
 exit(0)
 # ------------------ FM Model ------------------
 fm_params = dfm_params.copy()

@@ -44,8 +44,8 @@ class FeatureDictionary(object):
                 self.feat_dict[col] = dict(zip(us, range(tc, len(us)+tc)))  #把特征值记录到dict当中，[特证名，[特征值，特征索引]]
                 tc += len(us) #特征索引，每次都加
         self.feat_dim = tc
-        print "self.feat_dict: "+str(self.feat_dict)
-        print "self.feat_dim: "+str(self.feat_dim)
+        print ("self.feat_dict: "+str(self.feat_dict))
+        print ("self.feat_dim: "+str(self.feat_dim))
 
 
 class DataParser(object):
