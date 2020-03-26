@@ -139,7 +139,7 @@ print ("folds: " + str(folds))
 
 print ("folds all len: " + str(len(folds)))
 for i in range(len(folds)):
-    print ("folds[0]["+str(i)+"] len:" + str(len(folds[i][0])) + ", folds["+str(i)+"][1] len:" + str(len(folds[i][1])))
+    print ("folds["+str(i)+"][0] len:" + str(len(folds[i][0])) + ", folds["+str(i)+"][1] len:" + str(len(folds[i][1])))
 # print "folds[1][0] len:" + str(len(folds[1][0])) + ", folds[1][1] len:" + str(len(folds[1][1]))
 # print "folds[2][0] len:" + str(len(folds[2][0])) + ", folds[2][1] len:" + str(len(folds[2][1]))
 print ("folds done")
