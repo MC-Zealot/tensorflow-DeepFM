@@ -55,7 +55,7 @@ def _run_base_model_dfm(dfTrain, dfTest, folds, dfm_params):
     print ("fd: " + str(fd))
 
     data_parser = DataParser(feat_dict=fd)
-    Xi_train, Xv_train, y_train = data_parser.parse(df=dfTrain, has_label=True)
+    Xi_train, Xv_train, y_train = data_parser.parse(df=dfTrain, has_label=True)#数据结构是数组list
     Xi_test, Xv_test, ids_test = data_parser.parse(df=dfTest)
 
     dfm_params["feature_size"] = fd.feat_dim

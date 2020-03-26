@@ -32,7 +32,7 @@ class FeatureDictionary(object):
         df = pd.concat([dfTrain, dfTest])
         self.feat_dict = {}
         tc = 0
-        for col in df.columns:
+        for col in df.columns:#TODO 加类别型特征
             if col in self.ignore_cols:
                 continue
             if col in self.numeric_cols:  #对于数值型特征，直接用索引tc当做特征值？
