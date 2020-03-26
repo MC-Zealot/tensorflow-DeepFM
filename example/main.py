@@ -58,8 +58,8 @@ def _run_base_model_dfm(dfTrain, dfTest, folds, dfm_params):
     Xi_train, Xv_train, y_train = data_parser.parse(df=dfTrain, has_label=True)#数据结构是数组list,Xi根据字典找到的索引，Xv为1（稀疏数据只保存非空）
     Xi_test, Xv_test, ids_test = data_parser.parse(df=dfTest)
 
-    dfm_params["feature_size"] = fd.feat_dim
-    dfm_params["field_size"] = len(Xi_train[0])
+    dfm_params["feature_size"] = fd.feat_dim#one hot之后
+    dfm_params["field_size"] = len(Xi_train[0])#原始的特征数
     print ("feature_size:" +str(dfm_params["feature_size"])+", field_size: " + str(dfm_params["field_size"]))
     # print "end"
     # exit(0)

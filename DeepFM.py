@@ -297,10 +297,10 @@ class DeepFM(BaseEstimator, TransformerMixin):
 
             # evaluate training and validation datasets
             train_result = self.evaluate(Xi_train, Xv_train, y_train)
-            self.train_result.append(train_result)
+            self.train_result.append(train_result)#训练集指标
             if has_valid:
                 valid_result = self.evaluate(Xi_valid, Xv_valid, y_valid)
-                self.valid_result.append(valid_result)
+                self.valid_result.append(valid_result)#测试集指标
             if self.verbose > 0 and epoch % self.verbose == 0:
                 if has_valid:
                     print("[%d] train-result=%.4f, valid-result=%.4f [%.1f s]" % (epoch + 1, train_result, valid_result, time() - t1))

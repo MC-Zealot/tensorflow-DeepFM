@@ -73,9 +73,9 @@ class DataParser(object):
                 dfi.drop(col, axis=1, inplace=True)
                 dfv.drop(col, axis=1, inplace=True)
                 continue
-            if col in self.feat_dict.numeric_cols:
+            if col in self.feat_dict.numeric_cols:#数值型特征的处理
                 dfi[col] = self.feat_dict.feat_dict[col]
-            else:
+            else:#对于类别型特征的处理
                 dfi[col] = dfi[col].map(self.feat_dict.feat_dict[col])#dfi重新赋值为索引
                 dfv[col] = 1.
 
