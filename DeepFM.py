@@ -293,7 +293,7 @@ class DeepFM(BaseEstimator, TransformerMixin):
             total_batch = int(len(y_train) / self.batch_size)
             for i in range(total_batch):
                 Xi_batch, Xv_batch, y_batch = self.get_batch(Xi_train, Xv_train, y_train, self.batch_size, i)
-                self.fit_on_batch(Xi_batch, Xv_batch, y_batch)
+                self.fit_on_batch(Xi_batch, Xv_batch, y_batch)#分batch训练
 
             # evaluate training and validation datasets
             train_result = self.evaluate(Xi_train, Xv_train, y_train)
