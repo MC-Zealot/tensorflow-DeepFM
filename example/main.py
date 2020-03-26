@@ -55,7 +55,7 @@ def _run_base_model_dfm(dfTrain, dfTest, folds, dfm_params):
     print ("fd: " + str(fd))
 
     data_parser = DataParser(feat_dict=fd)
-    Xi_train, Xv_train, y_train = data_parser.parse(df=dfTrain, has_label=True)#数据结构是数组list
+    Xi_train, Xv_train, y_train = data_parser.parse(df=dfTrain, has_label=True)#数据结构是数组list,Xi根据字典找到的索引，Xv为1（稀疏数据只保存非空）
     Xi_test, Xv_test, ids_test = data_parser.parse(df=dfTest)
 
     dfm_params["feature_size"] = fd.feat_dim
@@ -68,7 +68,7 @@ def _run_base_model_dfm(dfTrain, dfTest, folds, dfm_params):
     print ("dfTrain.shape[0]: " + str(dfTrain.shape[0]))  #训练集样本数
     print ("(dfTrain.shape[0], 1): " + str((dfTrain.shape[0], 1)))  # （行数，列数）
     print ("y_train_meta: " + str(y_train_meta))
-    _get = lambda x, l: [x[i] for i in l]
+    _get = lambda x, l: [x[i] for i in l]#_get表达式：获取 n折交叉验证的数据，数据结构同上
     gini_results_cv = np.zeros(len(folds), dtype=float)
     gini_results_epoch_train = np.zeros((len(folds), dfm_params["epoch"]), dtype=float)
     gini_results_epoch_valid = np.zeros((len(folds), dfm_params["epoch"]), dtype=float)
