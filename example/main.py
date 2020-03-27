@@ -54,11 +54,11 @@ def _run_base_model_dfm(dfTrain, dfTest, folds, dfm_params):
     fd = FeatureDictionary(dfTrain=dfTrain, dfTest=dfTest, numeric_cols=config.NUMERIC_COLS, ignore_cols=config.IGNORE_COLS)
     print ("fd: " + str(fd))
 
-    data_parser = DataParser(feat_dict=fd)
+    data_parser = DataParser(feat_dict=fd)#转换成稀疏数据,并且做了one-hot
     Xi_train, Xv_train, y_train = data_parser.parse(df=dfTrain, has_label=True)#数据结构是数组list,Xi根据字典找到的索引，Xv为1（稀疏数据只保存非空）
     Xi_test, Xv_test, ids_test = data_parser.parse(df=dfTest)
 
-    dfm_params["feature_size"] = fd.feat_dim#one hot之后
+    dfm_params["feature_size"] = fd.feat_dim #one hot之后
     dfm_params["field_size"] = len(Xi_train[0])#原始的特征数
     print ("feature_size:" +str(dfm_params["feature_size"])+", field_size: " + str(dfm_params["field_size"]))
     # print "end"
@@ -152,8 +152,8 @@ dfm_params = {
     "use_deep": True,
     "embedding_size": 8,
     "dropout_fm": [1.0, 1.0],
-    "deep_layers": [32, 32],
-    "dropout_deep": [0.5, 0.5, 0.5],
+    "deep_layers": [64, 64],
+    "dropout_deep": [0.9, 0.9, 0.9],
     "deep_layers_activation": tf.nn.relu,
     "epoch": 30,#一共迭代30轮
     "batch_size": 1024,#一次批量训练1024个样本
