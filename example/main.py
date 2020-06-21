@@ -10,10 +10,12 @@ from matplotlib import pyplot as plt
 from sklearn.metrics import make_scorer
 from sklearn.model_selection import StratifiedKFold
 
-import config
-from metrics import gini_norm
+from example.metrics import gini_norm
 from sklearn.metrics import roc_auc_score
-from DataReader import FeatureDictionary, DataParser
+from example.DataReader import FeatureDictionary, DataParser
+
+from example import config
+
 sys.path.append("..")
 from DeepFM import DeepFM
 from sklearn.metrics import roc_auc_score
@@ -22,7 +24,8 @@ gini_scorer = make_scorer(gini_norm, greater_is_better=True, needs_proba=True)
 
 
 def _load_data():
-
+    pd.set_option('display.max_columns', None)
+    pd.set_option('display.max_rows', None)
     dfTrain = pd.read_csv(config.TRAIN_FILE)
     dfTest = pd.read_csv(config.TEST_FILE)
 
@@ -46,7 +49,7 @@ def _load_data():
     X_test = dfTest[cols].values
     ids_test = dfTest["id"].values
     cat_features_indices = [i for i,c in enumerate(cols) if c in config.CATEGORICAL_COLS]
-
+    print("dfTrain dtypes ", dfTrain.dtypes),
     return dfTrain, dfTest, X_train, y_train, X_test, ids_test, cat_features_indices
 
 

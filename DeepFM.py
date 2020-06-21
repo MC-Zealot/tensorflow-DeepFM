@@ -80,10 +80,8 @@ class DeepFM(BaseEstimator, TransformerMixin):
 
             tf.set_random_seed(self.random_seed)
 
-            self.feat_index = tf.placeholder(tf.int32, shape=[None, None],
-                                                 name="feat_index")  # None * F
-            self.feat_value = tf.placeholder(tf.float32, shape=[None, None],
-                                                 name="feat_value")  # None * F
+            self.feat_index = tf.placeholder(tf.int32, shape=[None, None], name="feat_index")  # None * F
+            self.feat_value = tf.placeholder(tf.float32, shape=[None, None], name="feat_value")  # None * F
             self.label = tf.placeholder(tf.float32, shape=[None, 1], name="label")  # None * 1
             self.dropout_keep_fm = tf.placeholder(tf.float32, shape=[None], name="dropout_keep_fm")
             self.dropout_keep_deep = tf.placeholder(tf.float32, shape=[None], name="dropout_keep_deep")
